@@ -9,6 +9,7 @@ showBase = 1;       // Show bottom half of enclosure
 showMMSBase = 0;    // Requires part_c_61-23038_1_multisystem_base_3d_rtp.stl but shows it above the top for alignment
 topCutouts = 1;     // Cutout top access points for cables to go though
 snacCutout = 0;     // Optional cutout under the SNAC port / dust cover
+baseCutouts = 0;    // Optional base access points for cables to go though, for stacking
 
 separation = 1;     // Separation of components when showing multiple in an exploded view
 
@@ -54,11 +55,11 @@ module enclosure() {
             }
 
             if (topCutouts) {
-                // Remove left cable access point
-                translate([6, 80, height - 5]) cube([13, 25, 5]);
+                cutouts(height);
+            }
 
-                // Remove right cable access point
-                translate([189, 36, height - 5]) cube([9, 20, 5]);
+            if (baseCutouts) {
+                cutouts(4);
             }
 
             if (snacCutout) {
@@ -75,6 +76,18 @@ module enclosure() {
     }
 }
 
+// The cutouts matching those on the base of the MMS case
+module cutouts(h) {
+    // Remove left cable access point
+    translate([6, 80, h-5]) cube([13, 25, 5]);
+
+    // Remove right cable access point
+    translate([189, 36, h-5]) cube([9, 20, 5]);
+}
+
+// Struts on the inside of the top & bottom surfaces.
+// Partially for strength but also for looks.
+// Both are mirrored so some go around non-existend cutouts on the bottom where they appear on the top.
 module struts() {
 
     // The cross struts
@@ -91,22 +104,22 @@ module struts() {
             cube([3, pl, 2]);
 
     // vertical struts
-    for (x = [width2 / 2, width2 + (wallThick / 4), width2 * 3 / 2]) {
+    for (x = [width2 / 2+1, width2 + (wallThick / 4), width2 * 3 / 2+1]) {
         translate([x, wallThick, 0]) cube([3, dh - wallThick, 2]);
     }
 
     // Horizontal struts
-    translate([wallThick, depth2 / 2, 0]) cube([dw - 15, 3, 2]);
+    translate([wallThick, depth2 / 2-1, 0]) cube([dw - 15, 3, 2]);
     translate([wallThick + 20, depth2 - (wallThick / 2), 0]) cube([dw - 18 - 25, 3, 2]);
-    translate([wallThick, depth2 * 3 / 2, 0]) cube([dw, 3, 2]);
+    translate([wallThick, depth2 * 3 / 2-2, 0]) cube([dw, 3, 2]);
 
     // topCutouts
-    translate([width-20, 18, 0]) cube([wallThick, 43, 2]);
-    translate([width-20, 29, 0]) cube([20, 3, 2]);
+    translate([width - 20, 18, 0]) cube([wallThick, 43, 2]);
+    translate([width - 20, 29, 0]) cube([20, 3, 2]);
 
-    translate([23,depth2-15,0]) cube([3,39,2]);
-    translate([2,depth2-15,  0]) cube([23, 3, 2]);
-    translate([2,depth2+21,  0]) cube([23, 3, 2]);
+    translate([23, depth2 - 15, 0]) cube([3, 39, 2]);
+    translate([2, depth2 - 15, 0]) cube([23, 3, 2]);
+    translate([2, depth2 + 21, 0]) cube([23, 3, 2]);
 
     // fan mount on the inside of the case
     translate([width - 24.5 - wallThick, depth2, 0]) {
@@ -146,7 +159,6 @@ module fan() {
 
 // The "grille" on the left hand side
 module grille() {
-    prad = PI / 180;
     for (x = [0: 9]) {
         dy = 6 + (divideHeight * .4 * sin(20 * x));
         for (z = [- 1, 1]) {
