@@ -4,17 +4,19 @@
 use <roundedcube.scad>;
 
 // Components to view, set to 0 to hide
-showTop = 1;        // Show top half of enclosure
-showBase = 0;       // Show bottom half of enclosure
+showTop = 0;        // Show top half of enclosure
+showBase = 1;       // Show bottom half of enclosure
 showMMSBase = 0;    // Requires part_c_61-23038_1_multisystem_base_3d_rtp.stl but shows it above the top for alignment
 
-separation = 3.5;     // Separation of components when showing multiple in an exploded view
+separation = 10;     // Separation of components when showing multiple in an exploded view
 
 // Options, set to 1 to enable, 0 to disable
 topCutouts = 1;     // Cutout top access points for cables to go though
 snacCutout = 0;     // Optional cutout under the SNAC port / dust cover
 baseCutouts = 0;    // Optional base access points for cables to go though, for stacking
 topPegs = 1;        // Add pegs on top to stop MMS from sliding off
+backFaceplate = 1;  // Faceplate at back
+frontFaceplate = 1; // Faceplate at front
 
 // Height of the expansion enclosure - this can be adjusted as required.
 // Note: this is the external size, internal clearance is 2 * wallThick maximum and that doesn't include any
@@ -44,19 +46,19 @@ module enclosure() {
             difference() {
                 // Hollow rounded cube
                 roundedcube([width, depth, height], radius = 3);
-                translate([wallThick, wallThick, wallThick])
-                    cube([width - wallThick2, depth - wallThick * 3, height - wallThick2]);
+                translate([wallThick, wallThick2, wallThick])
+                    cube([width - wallThick2, depth - wallThick * 4, height - wallThick2]);
 
                 // Cutout the fan & grille
                 fan();
                 grille();
 
                 // Cutout the back plate
-                translate([20, depth - wallThick * 3, wallThick2]) {
-                    cube([width - 40, wallThick2 * 2, height - 2 * wallThick2]);
+                if(backFaceplate) {
+                    translate([0, depth - wallThick * 3, 0]) faceplate();
                 }
-                translate([17, depth - wallThick * 1.5, wallThick * 1.25]) {
-                    cube([width - 34, wallThick, height - wallThick2]);
+                if(frontFaceplate) {
+                    translate([0, -wallThick, 0]) faceplate();
                 }
 
                 if (topCutouts) {
@@ -82,6 +84,16 @@ module enclosure() {
             posts(0);
         }
         posts(1);
+    }
+}
+
+// Faceplate, normally at the back but can be at the front as well
+module faceplate() {
+    translate([20, 0, wallThick2]) {
+        cube([width - 40, wallThick2 * 2, height - 2 * wallThick2]);
+    }
+    translate([17, wallThick * 1.5, wallThick * 1.25]) {
+        cube([width - 34, wallThick, height - wallThick2]);
     }
 }
 
@@ -152,7 +164,7 @@ module struts() {
 
     // vertical struts
     for (x = [width2 / 2 + 1, width2 + (wallThick / 4), width2 * 3 / 2 + 1]) {
-        translate([x, wallThick, 0]) cube([3, dh - wallThick, 2]);
+        translate([x, wallThick2, 0]) cube([3, dh - wallThick2, 2]);
     }
 
     // Horizontal struts
