@@ -4,34 +4,38 @@
 use <roundedcube.scad>;
 
 // Components to view, set to 0 to hide
-showTop = 0;        // Show top half of enclosure
+showTop = 1;        // Show top half of enclosure
 showBase = 1;       // Show bottom half of enclosure
-showMMSBase = 0;    // Requires part_c_61-23038_1_multisystem_base_3d_rtp.stl but shows it above the top for alignment
+showMMSBase = 1;    // Requires part_c_61-23038_1_multisystem_base_3d_rtp.stl but shows it above the top for alignment
+
+separation = 3.5;     // Separation of components when showing multiple in an exploded view
+
+// Options, set to 1 to enable, 0 to disable
 topCutouts = 1;     // Cutout top access points for cables to go though
 snacCutout = 0;     // Optional cutout under the SNAC port / dust cover
 baseCutouts = 0;    // Optional base access points for cables to go though, for stacking
+topPegs = 1;        // Add pegs on top to stop MMS from sliding off
 
-separation = 1;     // Separation of components when showing multiple in an exploded view
+// Height of the expansion enclosure - this can be adjusted as required.
+// Note: this is the external size, internal clearance is 2 * wallThick maximum and that doesn't include any
+// internal structures. Minimum is 50mm for the fan to fit
+height = 50;
+
+// =======================================
+// Do not change anything below this point
+// =======================================
 
 // Fixed dimensions of the MMS case
 width = 203;
 depth = 175;
 
-// Height of the expansion enclosure - this can be adjusted as required.
-// Note: this is the external size, internal clearance is 2 * wallThick maximum and that doesn't include any
-// internal structures.
-height = 50;
+divideHeight = height / 2;      // Position where the two halves divides
 
-// The position where the two halves divide, normally half way down the enclosure
-divideHeight = height / 2;
-
-// Thickness of walls
-wallThick = 3;
+wallThick = 3;                  // Thickness of walls
 wallThick2 = wallThick * 2;
 
-// Best not change anything below this point
-width2 = width / 2;       // Half of width
-depth2 = depth / 2;       // Half of depth
+width2 = width / 2;             // Half of width
+depth2 = depth / 2;             // Half of depth
 
 // Main enclosure
 module enclosure() {
@@ -73,16 +77,35 @@ module enclosure() {
             translate([0, 0, z]) struts();
         }
 
+        if (topPegs) {
+            topPegs();
+        }
     }
+}
+
+// The internal posts for attaching the two halves
+module posts() {
+    // TODO implement
+}
+
+// Top pegs allows the MMS to sit on top but not slide off
+module topPegs() {
+    translate([0, 0, height - 1])
+        for (x = [6.5, width-6]) {
+            for (y = [11.5,depth-13]) {
+                translate([x, y, 0])
+                    cylinder(r = 2.2, h = 5, $fn = 16);
+            }
+        }
 }
 
 // The cutouts matching those on the base of the MMS case
 module cutouts(h) {
     // Remove left cable access point
-    translate([6, 80, h-5]) cube([13, 25, 5]);
+    translate([6, 80, h - 5]) cube([13, 25, 5]);
 
     // Remove right cable access point
-    translate([189, 36, h-5]) cube([9, 20, 5]);
+    translate([189, 36, h - 5]) cube([9, 20, 5]);
 }
 
 // Struts on the inside of the top & bottom surfaces.
@@ -104,14 +127,14 @@ module struts() {
             cube([3, pl, 2]);
 
     // vertical struts
-    for (x = [width2 / 2+1, width2 + (wallThick / 4), width2 * 3 / 2+1]) {
+    for (x = [width2 / 2 + 1, width2 + (wallThick / 4), width2 * 3 / 2 + 1]) {
         translate([x, wallThick, 0]) cube([3, dh - wallThick, 2]);
     }
 
     // Horizontal struts
-    translate([wallThick, depth2 / 2-1, 0]) cube([dw - 15, 3, 2]);
+    translate([wallThick, depth2 / 2 - 1, 0]) cube([dw - 15, 3, 2]);
     translate([wallThick + 20, depth2 - (wallThick / 2), 0]) cube([dw - 18 - 25, 3, 2]);
-    translate([wallThick, depth2 * 3 / 2-2, 0]) cube([dw, 3, 2]);
+    translate([wallThick, depth2 * 3 / 2 - 2, 0]) cube([dw, 3, 2]);
 
     // topCutouts
     translate([width - 20, 18, 0]) cube([wallThick, 43, 2]);
