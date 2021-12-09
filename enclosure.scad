@@ -4,11 +4,11 @@
 use <roundedcube.scad>;
 
 // Components to view, set to 0 to hide
-showTop = 0;        // Show top half of enclosure
+showTop = 1;        // Show top half of enclosure
 showBase = 1;       // Show bottom half of enclosure
 showMMSBase = 0;    // Requires part_c_61-23038_1_multisystem_base_3d_rtp.stl but shows it above the top for alignment
 
-separation = 10;     // Separation of components when showing multiple in an exploded view
+separation = 1;     // Separation of components when showing multiple in an exploded view
 
 // Options, set to 1 to enable, 0 to disable
 topCutouts = 1;     // Cutout top access points for cables to go though
@@ -16,7 +16,7 @@ snacCutout = 0;     // Optional cutout under the SNAC port / dust cover
 baseCutouts = 0;    // Optional base access points for cables to go though, for stacking
 topPegs = 1;        // Add pegs on top to stop MMS from sliding off
 backFaceplate = 1;  // Faceplate at back
-frontFaceplate = 1; // Faceplate at front
+frontFaceplate = 0; // Faceplate at front
 
 // Height of the expansion enclosure - this can be adjusted as required.
 // Note: this is the external size, internal clearance is 2 * wallThick maximum and that doesn't include any
@@ -54,11 +54,11 @@ module enclosure() {
                 grille();
 
                 // Cutout the back plate
-                if(backFaceplate) {
+                if (backFaceplate) {
                     translate([0, depth - wallThick * 3, 0]) faceplate();
                 }
-                if(frontFaceplate) {
-                    translate([0, -wallThick, 0]) faceplate();
+                if (frontFaceplate) {
+                    translate([0, - wallThick, 0]) faceplate();
                 }
 
                 if (topCutouts) {
@@ -105,7 +105,7 @@ module posts(type) {
             for (y = [11.5, depth - 13]) {
                 translate([x, y, - 1]) {
                     // Use h = height + 2 to expose hole through top
-                    cylinder(r = 1, h = height -1, $fn = 16);
+                    cylinder(r = 1, h = height - 1, $fn = 16);
 
                     // Wider on bottom so bolt is shorter & recessed
                     cylinder(r = 3, h = 11, $fn = 16);
@@ -174,7 +174,7 @@ module struts() {
 
     // topCutouts
     translate([width - 20, 18, 0]) cube([wallThick, 43, 2]);
-    translate([width - 20, 29, 0]) cube([20, 3, 2]);
+    translate([width - 20, 29, 0]) cube([19, 3, 2]);
 
     translate([23, depth2 - 15, 0]) cube([3, 39, 2]);
     translate([2, depth2 - 15, 0]) cube([23, 3, 2]);
@@ -203,10 +203,10 @@ module fan() {
         }
 
         // Air holes
-        for (y = [1:6]) {
-            c = 8 - y;
-            dx = (c / 2) * 6;
-            for (z = [1, - 1]) {
+        for (z = [1, - 1]) {
+            for (y = [z == 1?1:2:6]) {
+                c = 8 - y;
+                dx = (c / 2) * 6;
                 for (x = [1:c]) {
                     translate([0, - 4 - dx + (6 * x), 3 * y * z])
                         rotate([0, 90, 0]) cylinder(r = 1.5, h = 8);
@@ -236,7 +236,10 @@ module grille() {
 module top() {
     difference() {
         enclosure();
-        translate([- 1, - 1, 0])  cube([width + 2, depth + 2, divideHeight]);
+        // cut out bottom half
+        translate([- 1, - 1, 0])  cube([width + 2, depth + 2, divideHeight - 1.8]);
+
+        translate([1.5, 1.5, 0])  cube([width - 3, depth - 3, divideHeight]);
     };
     if (topPegs) {
         topPegs();
@@ -247,7 +250,17 @@ module top() {
 module base() {
     difference() {
         enclosure();
-        translate([- 1, - 1, divideHeight])cube([width + 2, depth + 2, divideHeight]);
+
+        // Cut out top half
+        translate([- 1, - 1, divideHeight]) cube([width + 2, depth + 2, divideHeight]);
+
+        // Cut out lower lip
+        translate([- 0.2, 0, divideHeight - 2]) {
+            cube([2, depth, 3]);
+            cube([width, 2, 3]);
+            translate([width - 1.7, 0, 0]) cube([2, depth, 3]);
+            translate([0, depth - 2, 0]) cube([width, 2, 3]);
+        }
     };
 }
 
