@@ -1,10 +1,10 @@
 This is a simple concept of an expansion enclosure for the MISTer Multi System
 case.
 
-![View of just the enclosure](/home/peter/mms-expansion/images/preview1.png)
+![View of just the enclosure](images/preview1.png)
 
 It's designed in OpenSCAD and is intended to sit underneath the MMS case:
-![](/home/peter/mms-expansion/images/view1.png)
+![Side view with MMS on top](images/view1.png)
 
 It's configurable for it's height, images above are 50mm and the cutout's on
 the top can be turned off if required - the ones here matches those on the MMS case
