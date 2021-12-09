@@ -46,11 +46,11 @@ module enclosure() {
             grille();
 
             // Cutout the back plate
-            translate([10, depth - wallThick * 3, wallThick2]) {
-                cube([width - 20, wallThick2 * 2, height - 2 * wallThick2]);
+            translate([20, depth - wallThick * 3, wallThick2]) {
+                cube([width - 40, wallThick2 * 2, height - 2 * wallThick2]);
             }
-            translate([7, depth - wallThick * 1.5, wallThick * 1.25]) {
-                cube([width - 14, wallThick, height - wallThick2]);
+            translate([17, depth - wallThick * 1.5, wallThick * 1.25]) {
+                cube([width - 34, wallThick, height - wallThick2]);
             }
 
             if (topCutouts) {
@@ -68,9 +68,10 @@ module enclosure() {
         }
 
         // Support struts, identical on top and bottom
-        for (z = [wallThick - 0.2, height - wallThick - 0.5]) {
+        for (z = [wallThick - 0.2, height - wallThick - 1.5]) {
             translate([0, 0, z]) struts();
         }
+
     }
 }
 
@@ -89,14 +90,30 @@ module struts() {
         rotate([0, 0, pa])
             cube([3, pl, 2]);
 
-    // Horiz/Vert struts
-    for(x=[width2/2, width2 + (wallThick / 4), width2*3/2]) {
+    // vertical struts
+    for (x = [width2 / 2, width2 + (wallThick / 4), width2 * 3 / 2]) {
         translate([x, wallThick, 0]) cube([3, dh - wallThick, 2]);
     }
 
-    translate([wallThick, depth2/2, 0]) cube([dw-12, 3, 2]);
-    translate([wallThick+18, depth2 - (wallThick / 2), 0]) cube([dw-18, 3, 2]);
-    translate([wallThick, depth2*3/2, 0]) cube([dw, 3, 2]);
+    // Horizontal struts
+    translate([wallThick, depth2 / 2, 0]) cube([dw - 15, 3, 2]);
+    translate([wallThick + 20, depth2 - (wallThick / 2), 0]) cube([dw - 18 - 25, 3, 2]);
+    translate([wallThick, depth2 * 3 / 2, 0]) cube([dw, 3, 2]);
+
+    // topCutouts
+    translate([width-20, 18, 0]) cube([wallThick, 43, 2]);
+    translate([width-20, 29, 0]) cube([20, 3, 2]);
+
+    translate([23,depth2-15,0]) cube([3,39,2]);
+    translate([2,depth2-15,  0]) cube([23, 3, 2]);
+    translate([2,depth2+21,  0]) cube([23, 3, 2]);
+
+    // fan mount on the inside of the case
+    translate([width - 24.5 - wallThick, depth2, 0]) {
+        translate([0, 22, 0]) cube([24.5, wallThick, 2]);
+        translate([0, - 22 - wallThick2, 0]) cube([24.5, wallThick, 2]);
+        translate([0, - 22 - wallThick2, 0]) cube([wallThick, 50, 2]);
+    }
 }
 
 // The fan
