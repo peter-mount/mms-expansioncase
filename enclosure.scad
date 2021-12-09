@@ -4,7 +4,7 @@
 use <roundedcube.scad>;
 
 // Components to view, set to 0 to hide
-showTop = 1;        // Show top half of enclosure
+showTop = 0;        // Show top half of enclosure
 showBase = 1;       // Show bottom half of enclosure
 showMMSBase = 0;    // Requires part_c_61-23038_1_multisystem_base_3d_rtp.stl but shows it above the top for alignment
 topCutouts = 1;     // Cutout top access points for cables to go though
@@ -34,37 +34,69 @@ depth2 = depth / 2;       // Half of depth
 
 // Main enclosure
 module enclosure() {
-    difference() {
-        // Hollow rounded cube
-        roundedcube([width, depth, height], radius = 3);
-        translate([wallThick, wallThick, wallThick])
-            cube([width - wallThick2, depth - wallThick*3, height - wallThick2]);
+    union() {
+        difference() {
+            // Hollow rounded cube
+            roundedcube([width, depth, height], radius = 3);
+            translate([wallThick, wallThick, wallThick])
+                cube([width - wallThick2, depth - wallThick * 3, height - wallThick2]);
 
-        // Cutout the fan & grille
-        fan();
-        grille();
+            // Cutout the fan & grille
+            fan();
+            grille();
 
-        // Cutout the back plate
-        translate([10,depth-wallThick*3,wallThick2]) {
-            cube([width-20,wallThick2*2,height-2*wallThick2]);
+            // Cutout the back plate
+            translate([10, depth - wallThick * 3, wallThick2]) {
+                cube([width - 20, wallThick2 * 2, height - 2 * wallThick2]);
+            }
+            translate([7, depth - wallThick * 1.5, wallThick * 1.25]) {
+                cube([width - 14, wallThick, height - wallThick2]);
+            }
+
+            if (topCutouts) {
+                // Remove left cable access point
+                translate([6, 80, height - 5]) cube([13, 25, 5]);
+
+                // Remove right cable access point
+                translate([189, 36, height - 5]) cube([9, 20, 5]);
+            }
+
+            if (snacCutout) {
+                // Remove optional front access point under dust cover
+                translate([width2 - 35, 9, height - 5]) cube([70, 20, 5]);
+            }
         }
-        translate([7,depth-wallThick*1.5,wallThick*1.25]) {
-            cube([width-14,wallThick,height-wallThick2]);
-        }
 
-        if (topCutouts) {
-            // Remove left cable access point
-            translate([6, 80, height - 5]) cube([13, 25, 5]);
-
-            // Remove right cable access point
-            translate([189, 36, height - 5]) cube([9, 20, 5]);
-        }
-
-        if (snacCutout) {
-            // Remove optional front access point under dust cover
-            translate([width2 - 35, 9, height - 5]) cube([70, 20, 5]);
+        // Support struts, identical on top and bottom
+        for (z = [wallThick - 0.2, height - wallThick - 0.5]) {
+            translate([0, 0, z]) struts();
         }
     }
+}
+
+module struts() {
+
+    // The cross struts
+    dw = width - wallThick2;
+    dh = depth - wallThick2;
+    pl = sqrt((dw * dw) + (dh * dh));
+    pa = atan2(dw, dh);
+
+    translate([wallThick, wallThick, 0])
+        rotate([0, 0, - pa])
+            cube([3, pl, 2]);
+    translate([width - wallThick, wallThick, 0])
+        rotate([0, 0, pa])
+            cube([3, pl, 2]);
+
+    // Horiz/Vert struts
+    for(x=[width2/2, width2 + (wallThick / 4), width2*3/2]) {
+        translate([x, wallThick, 0]) cube([3, dh - wallThick, 2]);
+    }
+
+    translate([wallThick, depth2/2, 0]) cube([dw-12, 3, 2]);
+    translate([wallThick+18, depth2 - (wallThick / 2), 0]) cube([dw-18, 3, 2]);
+    translate([wallThick, depth2*3/2, 0]) cube([dw, 3, 2]);
 }
 
 // The fan
@@ -97,12 +129,12 @@ module fan() {
 
 // The "grille" on the left hand side
 module grille() {
-    prad = PI/180;
+    prad = PI / 180;
     for (x = [0: 9]) {
-        dy = 6 + (divideHeight*.4 * sin(20 * x));
+        dy = 6 + (divideHeight * .4 * sin(20 * x));
         for (z = [- 1, 1]) {
-            for(y=[0:3]) {
-                translate([- 1, 15 + 36*y + 4 * x, divideHeight + dy * z])
+            for (y = [0:3]) {
+                translate([- 1, 15 + 36 * y + 4 * x, divideHeight + dy * z])
                     rotate([0, 90, 0]) cylinder(r = 1.5, h = 8);
             }
         }
