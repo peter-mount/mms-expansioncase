@@ -4,11 +4,11 @@
 use <roundedcube.scad>;
 
 // Components to view, set to 0 to hide
-showTop = 1;        // Show top half of enclosure
+showTop = 0;        // Show top half of enclosure
 showBase = 1;       // Show bottom half of enclosure
 showMMSBase = 0;    // Requires part_c_61-23038_1_multisystem_base_3d_rtp.stl but shows it above the top for alignment
 
-separation = 1;     // Separation of components when showing multiple in an exploded view
+separation = 10;    // Separation of components when showing multiple in an exploded view
 
 // Options, set to 1 to enable, 0 to disable
 topCutouts = 1;     // Cutout top access points for cables to go though
@@ -46,8 +46,8 @@ module enclosure() {
             difference() {
                 // Hollow rounded cube
                 roundedcube([width, depth, height], radius = 3);
-                translate([wallThick, wallThick2, wallThick])
-                    cube([width - wallThick2, depth - wallThick * 4, height - wallThick2]);
+                translate([wallThick*1.5, wallThick2, wallThick])
+                    cube([width - wallThick*3, depth - wallThick * 4, height - wallThick2]);
 
                 // Cutout the fan & grille
                 fan();
