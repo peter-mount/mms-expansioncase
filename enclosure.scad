@@ -38,11 +38,19 @@ module enclosure() {
         // Hollow rounded cube
         roundedcube([width, depth, height], radius = 3);
         translate([wallThick, wallThick, wallThick])
-            cube([width - wallThick2, depth - wallThick2, height - wallThick2]);
+            cube([width - wallThick2, depth - wallThick*3, height - wallThick2]);
 
-        // Mark out the fan
+        // Cutout the fan & grille
         fan();
         grille();
+
+        // Cutout the back plate
+        translate([10,depth-wallThick*3,wallThick2]) {
+            cube([width-20,wallThick2*2,height-2*wallThick2]);
+        }
+        translate([7,depth-wallThick*1.5,wallThick*1.25]) {
+            cube([width-14,wallThick,height-wallThick2]);
+        }
 
         if (topCutouts) {
             // Remove left cable access point
