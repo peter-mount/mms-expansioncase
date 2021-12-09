@@ -6,9 +6,9 @@ use <roundedcube.scad>;
 // Components to view, set to 0 to hide
 showTop = 1;        // Show top half of enclosure
 showBase = 1;       // Show bottom half of enclosure
-showMMSBase = 1;    // Requires part_c_61-23038_1_multisystem_base_3d_rtp.stl but shows it above the top for alignment
+showMMSBase = 0;    // Requires part_c_61-23038_1_multisystem_base_3d_rtp.stl but shows it above the top for alignment
 topCutouts = 1;     // Cutout top access points for cables to go though
-snacCutout = 1;     // Optional cutout under the SNAC port / dust cover
+snacCutout = 0;     // Optional cutout under the SNAC port / dust cover
 
 separation = 1;     // Separation of components when showing multiple in an exploded view
 
