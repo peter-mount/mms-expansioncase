@@ -121,7 +121,7 @@ module joinPegs(top) {
             for (y = [5.5, depth - 7]) {
                 translate([x, y, 0])
                     if (top) {
-                        cylinder(r = 3.25, h = 5, $fn = 16);
+                        cylinder(r = 3.25, h = 10, $fn = 16);
                     } else {
                         cylinder(r = 3, h = 5, $fn = 16);
                     }
