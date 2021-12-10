@@ -123,3 +123,35 @@ The enclosure is built along the following lines:
 are added.called first during a difference, so you can use it to remove parts from the enclosure.
 `enclosureAdd()` is for adding new internal structures and
 `enclosureRemoveAfter()` for any final removals.
+
+#### Example
+
+This example is based on the parts/top_tc_tp_bf.scad generated file but covers the basics:
+
+    // The settings for the standard options, 0=disable, 1=enable
+    topCutouts = 1;
+    snacCutout = 0;
+    baseCutouts = 0;
+    topPegs = 1;
+    backFaceplate = 1;
+    frontFaceplate = 0;
+
+    // Include global.scad and enclosure.scad - change path as necessary
+    include <../global.scad>;
+    include <../enclosure.scad>;
+
+    // The part to render, either top(), bottom() or plate()
+    // If your part exists across both halves then you'll beed to print it
+    // once with each.
+    top();
+
+    // The hooks, place your code, or references to it in these
+    module enclosureRemoveBefore() {
+    }
+
+    module enclosureAdd() {
+    }
+    
+    module enclosureRemoveAfter() {
+    }
+
