@@ -1,4 +1,9 @@
 # Makefile to generate the various STL's
+#
+# When running, if you have the CPU & RAM, run this with -jX where
+# X is the number of concurrent render's you want to run.
+#
+
 
 # We require OpenSCAN 2021.01 for binary STL's
 #
@@ -11,11 +16,17 @@ export OPENSCAD_OPTS = --export-format binstl
 # Location of built stl's
 export BUILD		= $(shell pwd)/build
 
-.PHONY: all clean
+.PHONY: all clean genparts $(BUILD)
 
-all:
-	@mkdir -pv $(BUILD)
+all: $(BUILD) genparts
 	@$(MAKE) -C parts all
+
+genparts:
+	@./genparts.sh
+
+$(BUILD):
+	@mkdir -pv $(BUILD)
 
 clean:
 	@$(RM) -r $(BUILD)
+	@$(MAKE) -C parts clean

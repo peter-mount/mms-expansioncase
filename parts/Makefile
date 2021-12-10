@@ -5,6 +5,9 @@ STLS := $(patsubst %.scad,$(BUILD)/%.stl,$(wildcard *.scad))
 
 all: $(STLS)
 
+clean:
+	@$(RM) *.scad
+
 $(BUILD)/%.stl: %.scad
 	@echo $<
 	@$(OPENSCAD) $(OPENSCAD_OPTS) -o $@ $<

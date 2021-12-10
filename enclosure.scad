@@ -3,6 +3,8 @@
  */
 use <roundedcube.scad>;
 
+lipJoin = 0;        // Experimental: Add a lip around the join of the two halves
+
 // Fixed dimensions of the MMS case
 width = 203;
 depth = 175;
