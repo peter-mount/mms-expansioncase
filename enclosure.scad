@@ -157,9 +157,9 @@ module struts() {
             cube([3, pl, 2]);
 
     // vertical struts
-    for (x = [width2 / 2 + 1, width2 + (wallThick / 4), width2 * 3 / 2 + 1]) {
-        translate([x, wallThick2, 0]) cube([3, dh - wallThick2, 2]);
-    }
+    translate([width2 / 2 + 1, wallThick2, 0]) cube([3, dh - wallThick2, 2]);
+    translate([width2 + (wallThick / 4), wallThick2 + 37, 0]) cube([3, dh - wallThick2 - 37, 2]);
+    translate([width2 * 3 / 2 + 1, wallThick2, 0]) cube([3, dh - wallThick2, 2]);
 
     // Horizontal struts
     translate([wallThick, depth2 / 2 - 1, 0]) cube([dw - 15, 3, 2]);
