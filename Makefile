@@ -37,7 +37,7 @@ archive: $(BUILD)/mms_enclosure.zip $(BUILD)/mms_enclosure.tgz
 
 $(BUILD)/mms_enclosure.zip: parts
 	@$(RM) $@
-	zip -rq $@ README.md build/*.stl
+	zip -rq $@ LICENSE README.md build/*.stl
 $(BUILD)/mms_enclosure.tgz: parts
 	@$(RM) $@
-	tar czpf $@ README.md build/*.stl
+	tar czpf $@ LICENSE README.md build/*.stl
