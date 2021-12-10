@@ -3,8 +3,6 @@
  */
 use <roundedcube.scad>;
 
-lipJoin = 0;        // Experimental: Add a lip around the join of the two halves
-
 // Fixed dimensions of the MMS case
 width = 203;
 depth = 175;
@@ -210,7 +208,7 @@ module fan() {
 
         // Air holes
         for (z = [1, - 1]) {
-            for (y = [z == 1?1:2:6]) {
+            for (y = [1:6]) {
                 c = 8 - y;
                 dx = (c / 2) * 6;
                 for (x = [1:c]) {
@@ -244,12 +242,7 @@ module top() {
         enclosure();
 
         // cut out bottom half
-        if (lipJoin) {
-            translate([- 1, - 1, 0])  cube([width + 2, depth + 2, divideHeight - 1.8]);
-            translate([1.5, 1.5, 0])  cube([width - 3, depth - 3, divideHeight]);
-        } else {
-            translate([- 1, - 1, 0])  cube([width + 2, depth + 2, divideHeight]);
-        }
+        translate([- 1, - 1, 0])  cube([width + 2, depth + 2, divideHeight]);
 
         // Cut out holes for the pegs
         joinPegs(1);
@@ -269,16 +262,7 @@ module base() {
             // Cut out top half
             translate([- 1, - 1, divideHeight]) cube([width + 2, depth + 2, divideHeight]);
 
-            if (lipJoin) {
-                translate([- 0.2, 0, divideHeight - 2]) {
-                    cube([2, depth, 3]);
-                    cube([width, 2, 3]);
-                    translate([width - 1.7, 0, 0]) cube([2, depth, 3]);
-                    translate([0, depth - 2, 0]) cube([width, 2, 3]);
-                }
-            } else {
-                translate([- 1, - 1, divideHeight])cube([width + 2, depth + 2, divideHeight]);
-            }
+            translate([- 1, - 1, divideHeight])cube([width + 2, depth + 2, divideHeight]);
         }
         joinPegs(0);
     }
