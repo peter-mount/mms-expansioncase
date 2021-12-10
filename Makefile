@@ -11,20 +11,20 @@
 # this to that instance and remove "--export-format binstl" from OPENSCAD_OPTS
 #
 export OPENSCAD      = OpenSCAD-2021.01-x86_64.AppImage
-export OPENSCAD_OPTS = --export-format binstl
+export OPENSCAD_OPTS = --export-format binstl -q
 
 # Location of built stl's
 export BUILD		= $(shell pwd)/build
 
-.PHONY: all clean genparts $(BUILD) archive
+.PHONY: all clean parts $(BUILD) archive
 
-all: archive
+all:
+	@$(MAKE) parts
+	@$(MAKE) archive
 
 parts: $(BUILD) genparts
-	@$(MAKE) -C parts all
-
-genparts:
 	@./genparts.sh
+	@$(MAKE) -C parts all
 
 $(BUILD):
 	@mkdir -pv $(BUILD)
@@ -33,11 +33,11 @@ clean:
 	@$(RM) -r $(BUILD)
 	@$(MAKE) -C parts clean
 
-archive: parts $(BUILD)/mms_enclosure.zip $(BUILD)/mms_enclosure.tgz
+archive: $(BUILD)/mms_enclosure.zip $(BUILD)/mms_enclosure.tgz
 
 $(BUILD)/mms_enclosure.zip: parts
 	@$(RM) $@
-	zip -r $@ README.md build/*.stl
+	zip -rq $@ README.md build/*.stl
 $(BUILD)/mms_enclosure.tgz: parts
 	@$(RM) $@
-	tar cvzpf $@ README.md build/*.stl
+	tar czpf $@ README.md build/*.stl
