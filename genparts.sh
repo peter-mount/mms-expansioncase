@@ -30,6 +30,7 @@ genFilename() {
   if [[ $tc -eq 1 ]]; then name="${name}_tc"; fi
   if [[ $sc -eq 1 ]]; then name="${name}_sc"; fi
   if [[ $tp -eq 1 ]]; then name="${name}_tp"; fi
+  if [[ $bc -eq 1 ]]; then name="${name}_bc"; fi
   if [[ $bf -eq 1 ]]; then name="${name}_bf"; fi
   if [[ $ff -eq 1 ]]; then name="${name}_ff"; fi
   echo "parts/${name}.scad"
