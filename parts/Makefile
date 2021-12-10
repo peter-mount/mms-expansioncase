@@ -7,4 +7,4 @@ all: $(STLS)
 
 $(BUILD)/%.stl: %.scad
 	@echo $<
-	@$(OPENSCAD) -o $@ $<
+	@$(OPENSCAD) $(OPENSCAD_OPTS) -o $@ $<
