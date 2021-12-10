@@ -8,7 +8,7 @@
 // Components to view, set to 0 to hide
 showTop = 1;        // Show top half of enclosure
 showBase = 1;       // Show bottom half of enclosure
-showMMSBase = 1;    // Requires part_c_61-23038_1_multisystem_base_3d_rtp.stl but shows it above the top for alignment
+showMMSBase = 0;    // Requires part_c_61-23038_1_multisystem_base_3d_rtp.stl but shows it above the top for alignment
 
 separation = 2;    // Separation of components when showing multiple in an exploded view
 
@@ -25,8 +25,6 @@ frontFaceplate = 0; // Faceplate at front
 // internal structures. Minimum is 50mm for the fan to fit
 height = 50;
 
-lipJoin = 0;        // Experimental: Add a lip around the join of the two halves
-
 include <enclosure.scad>;
 
 // Show the major components
@@ -41,3 +39,9 @@ if (showBase) {
 if (showMMSBase) {
     translate([221, 67, height + 2 * separation]) import("part_c_61-23038_1_multisystem_base_3d_rtp.stl");
 }
+
+
+// Empty hooks
+module enclosureRemoveBefore() {}
+module enclosureAdd() {}
+module enclosureRemoveAfter() {}

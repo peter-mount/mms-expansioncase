@@ -77,6 +77,8 @@ These are the current options:
 
 ## Customising
 
+### Enclosure height
+
 There's one more configurable setting which is the **external** height of the enclosure.
 It defaults to 50mm but if you want to increase that height then edit `global.scad` and change the
 `height` variable.
@@ -84,3 +86,40 @@ It defaults to 50mm but if you want to increase that height then edit `global.sc
 Do not reduce the height below 50mm otherwise the fan will not fit.
 
 All released STL's are with the default height.
+
+### Adding parts
+
+To add custom parts via OpenSCAD code you need to implement the following three modules:
+
+    module enclosureRemoveBefore() {}
+    module enclosureAdd() {}
+    module enclosureRemoveAfter() {}
+
+These three get called at specific places during constructing the enclosure, but before it is split
+into the two halves.
+
+The enclosure is built along the following lines:
+
+    module enclosure() {
+        difference() {
+            union() {
+                difference() {
+                    // Outer hull
+                    // Cut out inside, fan and grille
+                    // back & front faceplate holders
+                    // cutouts
+                    enclosureRemoveBefore();
+                }
+                // Add support struts
+                // Add internal posts
+                enclosureAdd();
+            }
+            // Remove internal post holes
+            enclosureRemoveAfter();
+        }
+    }
+
+`enclosureRemoveBefore()` is for cutting out anything before the internal features
+are added.called first during a difference, so you can use it to remove parts from the enclosure.
+`enclosureAdd()` is for adding new internal structures and
+`enclosureRemoveAfter()` for any final removals.

@@ -52,6 +52,12 @@ genScad() {
     echo "include <../global.scad>;"
     echo "include <../enclosure.scad>;"
     echo "${part}();"
+
+    # Empty hooks to stop warnings
+    echo "module enclosureRemoveBefore() {}"
+    echo "module enclosureAdd() {}"
+    echo "module enclosureRemoveAfter() {}"
+
   ) >$fileName
 
   touch -r enclosure.scad $fileName

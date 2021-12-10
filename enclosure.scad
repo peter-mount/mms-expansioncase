@@ -22,12 +22,13 @@ module enclosure() {
     difference() {
         union() {
             difference() {
-                // Hollow rounded cube with the rear bottom edge flat for belt printers
+                // Rounded cube with the rear bottom edge flat for belt printers
                 hull() {
                     roundedcube([width, depth, height], radius = 3);
-                    translate([3, depth-3, 0]) cube([width -6, 3, 10]);
+                    translate([3, depth - 3, 0]) cube([width - 6, 3, 10]);
                 }
 
+                // Hollow the hull
                 translate([wallThick * 1.5, wallThick2, wallThick])
                     cube([width - wallThick * 3, depth - wallThick * 4, height - wallThick2]);
 
@@ -56,6 +57,8 @@ module enclosure() {
                     translate([width2 - 35, 9, height - 5]) cube([70, 20, 5]);
                 }
 
+                // Hook to cut out of enclosure
+                enclosureRemoveBefore();
             }
 
             // Support struts, identical on top and bottom
@@ -64,8 +67,13 @@ module enclosure() {
             }
 
             posts(0);
+
+            enclosureAdd();
         }
         posts(1);
+
+        // Hook to cut out of enclosure
+        enclosureRemoveAfter();
     }
 }
 
