@@ -16,9 +16,11 @@ export OPENSCAD_OPTS = --export-format binstl
 # Location of built stl's
 export BUILD		= $(shell pwd)/build
 
-.PHONY: all clean genparts $(BUILD)
+.PHONY: all clean genparts $(BUILD) archive
 
-all: $(BUILD) genparts
+all: archive
+
+parts: $(BUILD) genparts
 	@$(MAKE) -C parts all
 
 genparts:
@@ -30,3 +32,12 @@ $(BUILD):
 clean:
 	@$(RM) -r $(BUILD)
 	@$(MAKE) -C parts clean
+
+archive: parts $(BUILD)/mms_enclosure.zip $(BUILD)/mms_enclosure.tgz
+
+$(BUILD)/mms_enclosure.zip: parts
+	@$(RM) $@
+	zip -r $@ README.md build/*.stl
+$(BUILD)/mms_enclosure.tgz: parts
+	@$(RM) $@
+	tar cvzpf $@ README.md build/*.stl
