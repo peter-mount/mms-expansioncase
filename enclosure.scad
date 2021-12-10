@@ -23,6 +23,8 @@ frontFaceplate = 0; // Faceplate at front
 // internal structures. Minimum is 50mm for the fan to fit
 height = 50;
 
+lipJoin = 0;        // Experimental: Add a lip around the join of the two halves
+
 // =======================================
 // Do not change anything below this point
 // =======================================
@@ -46,8 +48,8 @@ module enclosure() {
             difference() {
                 // Hollow rounded cube
                 roundedcube([width, depth, height], radius = 3);
-                translate([wallThick*1.5, wallThick2, wallThick])
-                    cube([width - wallThick*3, depth - wallThick * 4, height - wallThick2]);
+                translate([wallThick * 1.5, wallThick2, wallThick])
+                    cube([width - wallThick * 3, depth - wallThick * 4, height - wallThick2]);
 
                 // Cutout the fan & grille
                 fan();
@@ -237,9 +239,13 @@ module top() {
     difference() {
         enclosure();
         // cut out bottom half
-        translate([- 1, - 1, 0])  cube([width + 2, depth + 2, divideHeight - 1.8]);
+        if (lipJoin) {
+            translate([- 1, - 1, 0])  cube([width + 2, depth + 2, divideHeight - 1.8]);
 
-        translate([1.5, 1.5, 0])  cube([width - 3, depth - 3, divideHeight]);
+            translate([1.5, 1.5, 0])  cube([width - 3, depth - 3, divideHeight]);
+        } else {
+            translate([- 1, - 1, 0])  cube([width + 2, depth + 2, divideHeight]);
+        }
     };
     if (topPegs) {
         topPegs();
@@ -252,16 +258,20 @@ module base() {
         enclosure();
 
         // Cut out top half
-        translate([- 1, - 1, divideHeight]) cube([width + 2, depth + 2, divideHeight]);
+        if (lipJoin) {
+            translate([- 1, - 1, divideHeight]) cube([width + 2, depth + 2, divideHeight]);
 
-        // Cut out lower lip
-        translate([- 0.2, 0, divideHeight - 2]) {
-            cube([2, depth, 3]);
-            cube([width, 2, 3]);
-            translate([width - 1.7, 0, 0]) cube([2, depth, 3]);
-            translate([0, depth - 2, 0]) cube([width, 2, 3]);
+            // Cut out lower lip
+            translate([- 0.2, 0, divideHeight - 2]) {
+                cube([2, depth, 3]);
+                cube([width, 2, 3]);
+                translate([width - 1.7, 0, 0]) cube([2, depth, 3]);
+                translate([0, depth - 2, 0]) cube([width, 2, 3]);
+            }
+        } else {
+            translate([- 1, - 1, divideHeight])cube([width + 2, depth + 2, divideHeight]);
         }
-    };
+    }
 }
 
 // Show the major components
