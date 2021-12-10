@@ -4,11 +4,11 @@
 use <roundedcube.scad>;
 
 // Components to view, set to 0 to hide
-showTop = 0;        // Show top half of enclosure
+showTop = 1;        // Show top half of enclosure
 showBase = 1;       // Show bottom half of enclosure
 showMMSBase = 0;    // Requires part_c_61-23038_1_multisystem_base_3d_rtp.stl but shows it above the top for alignment
 
-separation = 10;    // Separation of components when showing multiple in an exploded view
+separation = 5;    // Separation of components when showing multiple in an exploded view
 
 // Options, set to 1 to enable, 0 to disable
 topCutouts = 1;     // Cutout top access points for cables to go though
@@ -137,6 +137,22 @@ module topPegs() {
         }
 }
 
+// joinPegs adds little pegs to align the two halves
+// top==1 for the top hole, 0 for the bottom peg
+module joinPegs(top) {
+    translate([0, 0, divideHeight - 1])
+        for (x = [6.5, width - 6]) {
+            for (y = [5.5, depth - 7]) {
+                translate([x, y, 0])
+                    if (top) {
+                        cylinder(r = 3.25, h = 5, $fn = 16);
+                    } else {
+                        cylinder(r = 3, h = 5, $fn = 16);
+                    }
+            }
+        }
+}
+
 // The cutouts matching those on the base of the MMS case
 module cutouts(h) {
     // Remove left cable access point
@@ -238,15 +254,19 @@ module grille() {
 module top() {
     difference() {
         enclosure();
+
         // cut out bottom half
         if (lipJoin) {
             translate([- 1, - 1, 0])  cube([width + 2, depth + 2, divideHeight - 1.8]);
-
             translate([1.5, 1.5, 0])  cube([width - 3, depth - 3, divideHeight]);
         } else {
             translate([- 1, - 1, 0])  cube([width + 2, depth + 2, divideHeight]);
         }
+
+        // Cut out holes for the pegs
+        joinPegs(1);
     };
+
     if (topPegs) {
         topPegs();
     }
@@ -254,23 +274,25 @@ module top() {
 
 // The base of the enclosure
 module base() {
-    difference() {
-        enclosure();
+    union() {
+        difference() {
+            enclosure();
 
-        // Cut out top half
-        if (lipJoin) {
+            // Cut out top half
             translate([- 1, - 1, divideHeight]) cube([width + 2, depth + 2, divideHeight]);
 
-            // Cut out lower lip
-            translate([- 0.2, 0, divideHeight - 2]) {
-                cube([2, depth, 3]);
-                cube([width, 2, 3]);
-                translate([width - 1.7, 0, 0]) cube([2, depth, 3]);
-                translate([0, depth - 2, 0]) cube([width, 2, 3]);
+            if (lipJoin) {
+                translate([- 0.2, 0, divideHeight - 2]) {
+                    cube([2, depth, 3]);
+                    cube([width, 2, 3]);
+                    translate([width - 1.7, 0, 0]) cube([2, depth, 3]);
+                    translate([0, depth - 2, 0]) cube([width, 2, 3]);
+                }
+            } else {
+                translate([- 1, - 1, divideHeight])cube([width + 2, depth + 2, divideHeight]);
             }
-        } else {
-            translate([- 1, - 1, divideHeight])cube([width + 2, depth + 2, divideHeight]);
         }
+        joinPegs(0);
     }
 }
 
