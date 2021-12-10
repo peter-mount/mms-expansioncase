@@ -23,7 +23,9 @@ module enclosure() {
         union() {
             difference() {
                 // Hollow rounded cube
-                roundedcube([width, depth, height], radius = 3);
+                roundedcube([width, depth+3, height], radius = 3);
+                translate([-1,depth,-1]) cube([width+2,5,height+2]);
+
                 translate([wallThick * 1.5, wallThick2, wallThick])
                     cube([width - wallThick * 3, depth - wallThick * 4, height - wallThick2]);
 

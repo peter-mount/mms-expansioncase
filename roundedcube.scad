@@ -20,6 +20,6 @@ module roundedcube(size = [1, 1, 1], center = false, radius = 0.5) {
                     size[1] - (radius * 2),
                     size[2] - (radius * 2)
                 ]);
-            sphere(r = radius);
+            sphere(r = radius, $fn=20);
         }
 }

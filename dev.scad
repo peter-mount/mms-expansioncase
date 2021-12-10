@@ -7,10 +7,10 @@
 
 // Components to view, set to 0 to hide
 showTop = 1;        // Show top half of enclosure
-showBase = 0;       // Show bottom half of enclosure
-showMMSBase = 0;    // Requires part_c_61-23038_1_multisystem_base_3d_rtp.stl but shows it above the top for alignment
+showBase = 1;       // Show bottom half of enclosure
+showMMSBase = 1;    // Requires part_c_61-23038_1_multisystem_base_3d_rtp.stl but shows it above the top for alignment
 
-separation = 5;    // Separation of components when showing multiple in an exploded view
+separation = 2;    // Separation of components when showing multiple in an exploded view
 
 // Options, set to 1 to enable, 0 to disable
 topCutouts = 1;     // Cutout top access points for cables to go though
