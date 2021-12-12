@@ -6,7 +6,7 @@
  */
 
 // Components to view, set to 0 to hide
-showTop = 1;        // Show top half of enclosure
+showTop = 0;        // Show top half of enclosure
 showBase = 1;       // Show bottom half of enclosure
 showMMSBase = 0;    // Requires part_c_61-23038_1_multisystem_base_3d_rtp.stl but shows it above the top for alignment
 
@@ -14,7 +14,7 @@ separation = 2;    // Separation of components when showing multiple in an explo
 
 // Options, set to 1 to enable, 0 to disable
 topCutouts = 1;     // Cutout top access points for cables to go though
-snacCutout = 1;     // Optional cutout under the SNAC port / dust cover
+snacCutout = 0;     // Optional cutout under the SNAC port / dust cover
 baseCutouts = 0;    // Optional base access points for cables to go though, for stacking
 topPegs = 1;        // Add pegs on top to stop MMS from sliding off
 backFaceplate = 1;  // Faceplate at back

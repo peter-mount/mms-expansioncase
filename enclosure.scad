@@ -27,8 +27,8 @@ module enclosure() {
                 }
 
                 // Hollow the hull
-                translate([wallThick * 1.5, wallThick2, wallThick])
-                    cube([width - wallThick * 3, depth - wallThick * 4, height - wallThick2]);
+                translate([wallThick, wallThick2, wallThick])
+                    cube([width - wallThick2, depth - wallThick * 4, height - wallThick2]);
 
                 // Cutout the fan & grille
                 fan();
@@ -55,6 +55,14 @@ module enclosure() {
                     translate([width2 - 35, 9, height - 5]) cube([70, 20, 5]);
                 }
 
+                // Text on inside
+                for (y = [20, height - 20]) {
+                    translate([wallThick - 1, depth2 - 17, y]) rotate([90, 0, 90]) letter("Area51.dev", 4);
+                    translate([wallThick - 1, depth2 + 17, y]) rotate([90, 0, 90]) letter("V1", 4);
+                }
+
+                translate([width2,20,wallThick-1]) letter("MMS Expansion Case", 4);
+
                 // Hook to cut out of enclosure
                 enclosureRemoveBefore();
             }
@@ -75,6 +83,13 @@ module enclosure() {
     }
 }
 
+module letter(l, size = 10) {
+    // Use linear_extrude() to make the letters 3D objects as they
+    // are only 2D shapes when only using text()
+    linear_extrude(height = 3) {
+        text(l, size = size, font = font, halign = "center", valign = "center", $fn = 16);
+    }
+}
 // Faceplate, normally at the back but can be at the front as well
 module faceplate() {
     translate([20, 0, wallThick2]) {
@@ -242,7 +257,7 @@ module top() {
         enclosure();
 
         // cut out bottom half
-        translate([- 1, - 1, 0])  cube([width + 2, depth + 2, divideHeight]);
+        translate([- 1, - 1, - 1])  cube([width + 2, depth + 2, divideHeight + 1]);
 
         // Cut out holes for the pegs
         joinPegs(1);
