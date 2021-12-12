@@ -61,7 +61,7 @@ module enclosure() {
                     translate([wallThick - 1, depth2 + 17, y]) rotate([90, 0, 90]) letter("V1", 4);
                 }
 
-                translate([width2,20,wallThick-1]) letter("MMS Expansion Case", 4);
+                translate([width2,20,wallThick-1]) letter("MMS Expansion Unit", 4);
 
                 // Hook to cut out of enclosure
                 enclosureRemoveBefore();
