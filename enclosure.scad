@@ -23,7 +23,7 @@ module enclosure() {
                 // Rounded cube with the rear top & bottom edges flat for belt printers
                 hull() {
                     roundedcube([width, depth, height], radius = 3);
-                    translate([3, depth - 3, height-10]) cube([width - 6, 3, 10]);
+                    translate([3, depth - 3, height - 10]) cube([width - 6, 3, 10]);
                     translate([3, depth - 3, 0]) cube([width - 6, 3, 10]);
                 }
 
@@ -101,6 +101,17 @@ module faceplate() {
     }
     translate([17, wallThick * 1.5, wallThick * 1.25]) {
         cube([width - 34, wallThick, height - wallThick2]);
+    }
+}
+
+// Generates two simple faceplates:
+// type=0 a simple cube that fits in place
+// type=1 A raised section that can be either outside or inside to give extra thickness
+module faceplateBlank(type) {
+    cube([width - 35, wallThick-.5, height - wallThick2-1]);
+    if(type) {
+        translate([3.75,-1.5,3.75])
+        cube([width - 41-1.5, wallThick-.5, height - wallThick2-1-6-1]);
     }
 }
 
@@ -264,6 +275,8 @@ module top() {
         // cut out bottom half
         translate([- 1, - 1, - 1])  cube([width + 2, depth + 2, divideHeight + 1]);
 
+//        translate([width2, - 1, 0])cube([width + 2, depth + 2, height]);
+
         // Cut out holes for the pegs
         joinPegs(1);
         topPegs(1);
@@ -282,9 +295,7 @@ module base() {
             enclosure();
 
             // Cut out top half
-            translate([- 1, - 1, divideHeight]) cube([width + 2, depth + 2, divideHeight]);
-
-            translate([- 1, - 1, divideHeight])cube([width + 2, depth + 2, divideHeight]);
+            translate([- 1, - 1, divideHeight]) cube([width + 2, depth + 2, divideHeight+1]);
         }
         joinPegs(0);
     }

@@ -9,8 +9,10 @@
 showTop = 1;        // Show top half of enclosure
 showBase = 1;       // Show bottom half of enclosure
 showMMSBase = 0;    // Requires part_c_61-23038_1_multisystem_base_3d_rtp.stl but shows it above the top for alignment
+showFrontPlate = 0; // Shows front panel if frontFaceplate=1
+showBackPlate = 0;  // Shows back plate if backFaceplate=1
 
-separation = 2;    // Separation of components when showing multiple in an exploded view
+separation = 2;     // Separation of components when showing multiple in an exploded view
 
 // Options, set to 1 to enable, 0 to disable
 topCutouts = 1;     // Cutout top access points for cables to go though
@@ -18,7 +20,7 @@ snacCutout = 0;     // Optional cutout under the SNAC port / dust cover
 baseCutouts = 0;    // Optional base access points for cables to go though, for stacking
 topPegs = 1;        // Add pegs on top to stop MMS from sliding off
 backFaceplate = 1;  // Faceplate at back
-frontFaceplate = 0; // Faceplate at front
+frontFaceplate = 1; // Faceplate at front
 
 // Height of the expansion enclosure - this can be adjusted as required.
 // Note: this is the external size, internal clearance is 2 * wallThick maximum and that doesn't include any
@@ -40,6 +42,13 @@ if (showMMSBase) {
     translate([221, 67, height + 2 * separation]) import("part_c_61-23038_1_multisystem_base_3d_rtp.stl");
 }
 
+if (showFrontPlate && frontFaceplate) {
+    translate([17.5, .25+wallThick/2, wallThick+1]) faceplateBlank(1);
+}
+
+if (showBackPlate && backFaceplate) {
+    translate([17.5, depth-1.25-wallThick, wallThick+1]) faceplateBlank(0);
+}
 
 // Empty hooks
 module enclosureRemoveBefore() {}
