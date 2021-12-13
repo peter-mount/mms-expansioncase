@@ -27,8 +27,11 @@ module enclosure() {
                 }
 
                 // Hollow the hull
-                translate([wallThick, wallThick2, wallThick])
-                    cube([width - wallThick2, depth - wallThick * 4, height - wallThick2]);
+                // If we do not have a faceplate visible then the wall needs to be thinner
+                translate([wallThick, frontFaceplate?wallThick2:wallThick, wallThick])
+                    cube([width - wallThick2,
+                            depth - wallThick * (2 + frontFaceplate + backFaceplate),
+                            height - wallThick2]);
 
                 // Cutout the fan & grille
                 fan();
@@ -61,7 +64,7 @@ module enclosure() {
                     translate([wallThick - 1, depth2 + 17, y]) rotate([90, 0, 90]) letter("V1", 4);
                 }
 
-                translate([width2,20,wallThick-1]) letter("MMS Expansion Unit", 4);
+                translate([width2, 20, wallThick - 1]) letter("MMS Expansion Unit", 4);
 
                 // Hook to cut out of enclosure
                 enclosureRemoveBefore();
