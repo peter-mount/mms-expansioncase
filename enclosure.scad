@@ -20,9 +20,10 @@ module enclosure() {
     difference() {
         union() {
             difference() {
-                // Rounded cube with the rear bottom edge flat for belt printers
+                // Rounded cube with the rear top & bottom edges flat for belt printers
                 hull() {
                     roundedcube([width, depth, height], radius = 3);
+                    translate([3, depth - 3, height-10]) cube([width - 6, 3, 10]);
                     translate([3, depth - 3, 0]) cube([width - 6, 3, 10]);
                 }
 
