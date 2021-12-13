@@ -131,12 +131,13 @@ module posts(type) {
 }
 
 // Top pegs allows the MMS to sit on top but not slide off
-module topPegs() {
-    translate([0, 0, height - 1])
+// type=1 for a hole, 0 for the peg
+module topPegs(type) {
+    translate([0, 0, height - 4])
         for (x = [6.5, width - 6]) {
             for (y = [11.5, depth - 13]) {
                 translate([x, y, 0])
-                    cylinder(r = 2.2, h = 5, $fn = 16);
+                    cylinder(r = type?2.8:2.2, h = 8, $fn = 16);
             }
         }
 }
@@ -264,10 +265,12 @@ module top() {
 
         // Cut out holes for the pegs
         joinPegs(1);
+        topPegs(1);
     };
 
-    if (topPegs) {
-        topPegs();
+    // Show the pegs between top & MMS
+    if (showMMSBase) {
+        topPegs(0);
     }
 }
 
