@@ -92,16 +92,18 @@ for i in $(seq 0 $(((1 << 3) - 1))); do
   genScad $(genFilename "base") "base"
 done
 
-# Generate faceplates
-for i in $(seq 0 $(((1 << 1) - 1))); do
-  # The possible options, unused ones are set to 0 and not part of the sequence
-  tc=0
-  sc=0
-  tp=0
-  bc=0
-  bf=0
-  ff=0
-  arg=$(((i & 1) == 1))
+# Misc parts
+tc=0
+sc=0
+tp=0
+bc=0
+bf=0
+ff=0
+arg=""
 
-  genScad $(genFilename "plate") "faceplateBlank"
-done
+# Faceplates
+genScad $(genFilename "plate") "faceplatePlain"
+genScad $(genFilename "faceplateFlush") "faceplateFlush"
+
+# Pegs to hold MMS to top
+genScad $(genFilename "pegs") "genPegs"

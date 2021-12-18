@@ -108,11 +108,19 @@ module faceplate() {
 // type=0 a simple cube that fits in place
 // type=1 A raised section that can be either outside or inside to give extra thickness
 module faceplateBlank(type) {
-    cube([width - 35, wallThick-.5, height - wallThick2-1]);
-    if(type) {
-        translate([3.75,-1.5,3.75])
-        cube([width - 41-1.5, wallThick-.5, height - wallThick2-1-6-1]);
+    cube([width - 35, wallThick - .5, height - wallThick2 - 1]);
+    if (type) {
+        translate([3.75, - 1.5, 3.75])
+            cube([width - 41 - 1.5, wallThick - .5, height - wallThick2 - 1 - 6 - 1]);
     }
+}
+
+module facePlatePlain() {
+    faceplateBlank(0);
+}
+
+module facePlateFlush() {
+    faceplateBlank(1);
 }
 
 // The internal posts for attaching the two halves
@@ -148,10 +156,22 @@ module topPegs(type) {
     translate([0, 0, height - 4])
         for (x = [6.5, width - 6]) {
             for (y = [11.5, depth - 13]) {
-                translate([x, y, 0])
-                    cylinder(r = type?2.8:2.2, h = 8, $fn = 16);
+                peg(x,y);
             }
         }
+}
+
+module peg(x, y) {
+    translate([x, y, 0])
+        cylinder(r = type?2.8:2.2, h = 8, $fn = 16);
+}
+
+module genPegs() {
+    for (x = [0, 5]) {
+        for (y = [0, 5]) {
+            translate([x, y, 0]) peg(x,y);
+        }
+    }
 }
 
 // joinPegs adds little pegs to align the two halves
@@ -275,7 +295,7 @@ module top() {
         // cut out bottom half
         translate([- 1, - 1, - 1])  cube([width + 2, depth + 2, divideHeight + 1]);
 
-//        translate([width2, - 1, 0])cube([width + 2, depth + 2, height]);
+        //        translate([width2, - 1, 0])cube([width + 2, depth + 2, height]);
 
         // Cut out holes for the pegs
         joinPegs(1);
@@ -295,7 +315,7 @@ module base() {
             enclosure();
 
             // Cut out top half
-            translate([- 1, - 1, divideHeight]) cube([width + 2, depth + 2, divideHeight+1]);
+            translate([- 1, - 1, divideHeight]) cube([width + 2, depth + 2, divideHeight + 1]);
         }
         joinPegs(0);
     }

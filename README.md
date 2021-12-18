@@ -75,6 +75,21 @@ These are the current options:
 | bf | Space for a faceplate at the back | top base   |
 | ff | Space for a faceplate at the front | top base   |
 
+## Miscelaneous parts
+
+### Face plates
+
+There are currently two faceplate options available:
+
+| Option             | Description                                                                                                  |
+|--------------------|--------------------------------------------------------------------------------------------------------------|
+| faceplateSlush.stl | A plain blank faceplate                                                                                      |
+| faceplatePlain.stl | A blank faceplate but with the centre raised so the front appears to be flush with the rest of the enclosure |
+
+### Pegs
+If you have printed a top with the `tp` option for pegs then you also need to print `pegs.stl` which contains a set of
+pegs that will insert into them and prevent the MMS from sliding off the enclosure.
+
 ## Customising
 
 ### Enclosure height
