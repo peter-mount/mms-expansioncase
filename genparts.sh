@@ -33,6 +33,7 @@ genFilename() {
   if [[ $bc -eq 1 ]]; then name="${name}_bc"; fi
   if [[ $bf -eq 1 ]]; then name="${name}_bf"; fi
   if [[ $ff -eq 1 ]]; then name="${name}_ff"; fi
+  if [[ $arg -eq 1 ]]; then name="${name}_${arg}"; fi
   echo "parts/${name}.scad"
 }
 
@@ -51,7 +52,7 @@ genScad() {
     echo "frontFaceplate = $ff;"
     echo "include <../global.scad>;"
     echo "include <../enclosure.scad>;"
-    echo "${part}();"
+    echo "${part}(${arg});"
 
     # Empty hooks to stop warnings
     echo "module enclosureRemoveBefore() {}"
@@ -72,6 +73,7 @@ for i in $(seq 0 $(((1 << 5) - 1))); do
   bc=0
   bf=$(((i & 8) == 8))
   ff=$(((i & 16) == 16))
+  arg=""
 
   genScad $(genFilename "top") "top"
 done
@@ -85,6 +87,21 @@ for i in $(seq 0 $(((1 << 3) - 1))); do
   bc=$(((i & 1) == 1))
   bf=$(((i & 2) == 2))
   ff=$(((i & 4) == 4))
+  arg=""
 
   genScad $(genFilename "base") "base"
+done
+
+# Generate faceplates
+for i in $(seq 0 $(((1 << 1) - 1))); do
+  # The possible options, unused ones are set to 0 and not part of the sequence
+  tc=0
+  sc=0
+  tp=0
+  bc=0
+  bf=0
+  ff=0
+  arg=$(((i & 1) == 1))
+
+  genScad $(genFilename "plate") "faceplateBlank"
 done
