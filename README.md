@@ -54,11 +54,11 @@ For example a single threaded build takes approximately 10 minutes but on my mac
 
 Just make certain the value you pick is less than the number of cores/threads available on your CPU.
 
-## File name convention
+## Enclosure
 
 The generated stl's have the following naming convention:
 
-Name of the part, `top`, `base` or `plate`
+Name of the part, `top` or `base`
 
 Then a `_` delimited list of the options applied.
 
@@ -75,18 +75,16 @@ These are the current options:
 | bf | Space for a faceplate at the back | top base   |
 | ff | Space for a faceplate at the front | top base   |
 
-## Miscelaneous parts
-
-### Face plates
+## Face plates
 
 There are currently two faceplate options available:
 
 | Option             | Description                                                                                                  |
 |--------------------|--------------------------------------------------------------------------------------------------------------|
-| faceplateSlush.stl | A plain blank faceplate                                                                                      |
-| faceplatePlain.stl | A blank faceplate but with the centre raised so the front appears to be flush with the rest of the enclosure |
+| faceplatePlain.stl | A plain blank faceplate                                                                                      |
+| faceplateFlush.stl | A blank faceplate but with the centre raised so the front appears to be flush with the rest of the enclosure |
 
-### Pegs
+## Pegs
 If you have printed a top with the `tp` option for pegs then you also need to print `pegs.stl` which contains a set of
 pegs that will insert into them and prevent the MMS from sliding off the enclosure.
 

@@ -102,7 +102,7 @@ ff=0
 arg=""
 
 # Faceplates
-genScad $(genFilename "plate") "faceplatePlain"
+genScad $(genFilename "faceplatePlain") "faceplatePlain"
 genScad $(genFilename "faceplateFlush") "faceplateFlush"
 
 # Pegs to hold MMS to top

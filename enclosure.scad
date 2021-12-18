@@ -115,11 +115,11 @@ module faceplateBlank(type) {
     }
 }
 
-module facePlatePlain() {
+module faceplatePlain() {
     faceplateBlank(0);
 }
 
-module facePlateFlush() {
+module faceplateFlush() {
     faceplateBlank(1);
 }
 
