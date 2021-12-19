@@ -156,20 +156,20 @@ module topPegs(type) {
     translate([0, 0, height - 4])
         for (x = [6.5, width - 6]) {
             for (y = [11.5, depth - 13]) {
-                peg(x,y);
+                peg(type, x, y);
             }
         }
 }
 
-module peg(x, y) {
+module peg(type, x, y) {
     translate([x, y, 0])
-        cylinder(r = type?2.8:2.2, h = 8, $fn = 16);
+        cylinder(r = type?2.8:2.5, h = 8, $fn = 16);
 }
 
 module genPegs() {
     for (x = [0, 5]) {
         for (y = [0, 5]) {
-            translate([x, y, 0]) peg(x,y);
+            translate([x, y, 0]) peg(0, x, y);
         }
     }
 }
